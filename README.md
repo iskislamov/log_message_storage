@@ -58,7 +58,9 @@ git clone https://github.com/iskislamov/log_message_storage
 cd log_message_storage
 
 cmake -G "MinGW Makefiles" -B build -S .
+
 cmake --build ./build
 
 ./build/serializer -d --i=params.txt --o=deserialized.txt
+
 ./build/serializer -s --i=deserialized.txt --o=serialized.txt
