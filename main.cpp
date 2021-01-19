@@ -108,7 +108,7 @@ CommandArguments ParseArguments(int argc, char* argv[])
     {
         std::string_view arg{ argv[i] };
         
-        if (arg._Starts_with(SerializeModeOption))
+        if (arg.rfind(SerializeModeOption, 0) == 0)
         {
             if (arguments.mode == WorkingMode::Deserialization)
             {
@@ -118,7 +118,7 @@ CommandArguments ParseArguments(int argc, char* argv[])
             arguments.mode = WorkingMode::Serialization;
         }
 
-        if (arg._Starts_with(DeserializeModeOption))
+        if (arg.rfind(DeserializeModeOption, 0) == 0)
         {
             if (arguments.mode == WorkingMode::Serialization)
             {
@@ -128,19 +128,19 @@ CommandArguments ParseArguments(int argc, char* argv[])
             arguments.mode = WorkingMode::Deserialization;
         }
 
-        if (arg._Starts_with(InputFileOption))
+        if (arg.rfind(InputFileOption, 0) == 0)
         {
             arg.remove_prefix(InputFileOption.size());
             arguments.inFile = arg;
         }
 
-        if (arg._Starts_with(OutputFileOption))
+        if (arg.rfind(OutputFileOption, 0) == 0)
         {
             arg.remove_prefix(OutputFileOption.size());
             arguments.outFile = arg;
         }
         
-        if (arg._Starts_with(TemplateFileOption))
+        if (arg.rfind(TemplateFileOption, 0) == 0)
         {
             arg.remove_prefix(TemplateFileOption.size());
             arguments.templateFile = arg;
@@ -221,8 +221,6 @@ int main(int argc, char* argv[])
     {
         std::cout << "Parameters of program are incorrect, please see readme.md again" << std::endl;
     }
-
-    system("pause");
 
     return 0;
 }

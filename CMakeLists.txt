@@ -6,8 +6,8 @@ add_definitions(-DUNICODE -D_UNICODE)
 
 set(sources
 	main.cpp
-	log_message_storage.h
-	log_message_storage.cpp)
+	log_messages_storage.h
+	log_messages_storage.cpp)
 	
 add_executable(serializer ${sources})
 
