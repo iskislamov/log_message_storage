@@ -69,7 +69,7 @@ cmake --build ./build
 
 # Собрать решение для Linux
 
-g++ log_messages_storage.cpp main.cpp -o serializer
+g++ -std=c++17 log_messages_storage.cpp main.cpp -o serializer
 
 ./serializer -d --i=params.txt --o=deserialized.txt
 
