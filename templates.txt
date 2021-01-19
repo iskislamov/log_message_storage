@@ -1,3 +1,6 @@
-2
+5
 4#In module # has happened the error # ##
 3#Unexpected behaviour for # dump in ##
+5#some # words # that # separate # patterns.#
+2#Another # occured.#
+3#Problem with both # and ##

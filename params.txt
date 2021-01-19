@@ -1,5 +1,11 @@
-4
+10
 4#0#Taxi#Driver error#Ivanov#
 3#1#Program#Some file#
+2#3#Mistake#
+3#4#Tea#Coffee#
 3#1#Windows player#nowhere#
 4#0#Airport#SystemError#Alexeev#
+2#3#Event#
+5#2#Make#yourself#at#home#
+2#3#Fail#
+3#4#Alpha#Beta#

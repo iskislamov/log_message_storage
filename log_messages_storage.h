@@ -30,18 +30,19 @@ class LogMessagesStorage
 {
 public:
     LogMessagesStorage() = default;
-    //LogMessagesStorage(
-    //    std::vector<std::string> logMessages,
-    //    std::vector<std::vector<std::string>> templates);
-    //LogMessagesStorage(
-    //    std::vector<std::string> logMessages,
-    //    std::wstring pathToTemplatesFile);
+    LogMessagesStorage(
+        const std::vector<std::string>& logMessages,
+        const std::string& pathToTemplatesFile = "");
     LogMessagesStorage(
         std::vector<LogMessageParams> params,
         std::vector<std::vector<std::string>> templates) noexcept;
 
-    OperationStatus LoadFromFile(const std::string& pathToParamsFile, const std::string& pathToTemplatesFile);
-    OperationStatus SaveToFile(const std::string&  pathToParamsFile, const std::string& pathToTemplatesFile);
+    OperationStatus LoadFromFile(
+        const std::string& pathToParamsFile, 
+        const std::string& pathToTemplatesFile = "");
+    OperationStatus SaveToFile(
+        const std::string& pathToParamsFile, 
+        const std::string& pathToTemplatesFile = "");
 
     LogMessagesStorageData GetData() const noexcept;
 

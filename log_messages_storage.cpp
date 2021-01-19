@@ -1,16 +1,17 @@
 #include "log_messages_storage.h"
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <sstream>
-#include <string_view>
 
 using namespace std::literals;
 
 namespace log_messages { 
 namespace {
-
-constexpr auto Separator = "#"sv;
+    
 constexpr auto WrongSize = static_cast<size_t>(-1);
+constexpr auto Separator = "#"sv;
+const auto DefaultTemplateFileName = "templates.txt"s;
 
 size_t StringToSizeT(const std::string& str)
 {
@@ -112,6 +113,44 @@ LogMessagesStorage::LogMessagesStorage(
 {    
 }
 
+LogMessagesStorage::LogMessagesStorage(
+    const std::vector<std::string>& logMessages, 
+    const std::string& pathToTemplatesFile)
+{
+    LoadTemplatesFromFile(pathToTemplatesFile.empty() 
+        ? DefaultTemplateFileName
+        : pathToTemplatesFile);
+
+    for (size_t i = 0; i < templates_.size(); ++i)
+    {
+        std::string templateRegexString;
+        for (auto&& templateWord : templates_[i])
+        {
+            templateRegexString.append(templateWord);
+            templateRegexString.append("(.*)");
+        }
+
+        const std::regex templateRegex{ templateRegexString };
+        std::cmatch match;
+
+        for (auto&& logMessage : logMessages)
+        {
+            if (std::regex_search(
+                logMessage.c_str(), 
+                match, 
+                templateRegex))
+            {
+                params_.push_back({ i /* templateNumber */, { } /* templateParamNames */ });
+                params_.back().templateParamNames.reserve(templates_[i].size() - 1);
+                for (size_t j = 1; j < templates_[i].size(); ++j)
+                {
+                    params_.back().templateParamNames.push_back(match[j]);
+                }
+            }
+        }
+    }
+}
+
 OperationStatus LogMessagesStorage::LoadFromFile(const std::string& pathToParamsFile, const std::string& pathToTemplatesFile)
 {
     return LoadTemplatesFromFile(pathToTemplatesFile) == OperationStatus::Ok &&
@@ -123,7 +162,9 @@ OperationStatus LogMessagesStorage::LoadFromFile(const std::string& pathToParams
 OperationStatus LogMessagesStorage::SaveToFile(const std::string& pathToParamsFile, const std::string& pathToTemplatesFile)
 {
     std::ofstream paramsFile{ pathToParamsFile };
-    std::ofstream templatesFile{ pathToTemplatesFile };
+    std::ofstream templatesFile{ pathToTemplatesFile.empty() 
+        ? DefaultTemplateFileName 
+        : pathToTemplatesFile };
 
     if (!paramsFile.is_open())
     {
@@ -171,6 +212,9 @@ LogMessagesStorageData LogMessagesStorage::GetData() const noexcept
 
 OperationStatus LogMessagesStorage::LoadTemplatesFromFile(const std::string& pathToTemplatesFile)
 {    
+    if (pathToTemplatesFile.empty())
+        return LoadTemplatesFromFile(DefaultTemplateFileName);
+
     std::ifstream templatesFile{ pathToTemplatesFile };
     if (!templatesFile.is_open())
     {
