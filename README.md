@@ -51,7 +51,9 @@
 4) --t=<template_file_name>, указывает имя файла с шаблонами
 
 
-# Собрать решение
+# Собрать решение для Windows
+
+Необходим MinGW
 
 git clone https://github.com/iskislamov/log_message_storage
 
@@ -64,3 +66,11 @@ cmake --build ./build
 ./build/serializer -d --i=params.txt --o=deserialized.txt
 
 ./build/serializer -s --i=deserialized.txt --o=serialized.txt
+
+# Собрать решение для Linux
+
+g++ log_messages_storage.cpp main.cpp -o serializer
+
+./serializer -d --i=params.txt --o=deserialized.txt
+
+./serializer -s --i=deserialized.txt --o=serialized.txt
